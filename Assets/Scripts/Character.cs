@@ -3,9 +3,10 @@ using System.Collections;
 
 public class Character : MonoBehaviour {
 
-	public float speed = 2;
+	public GameSettings settings;
 
 	private Rigidbody rigidBody;
+
 	void Start() {
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.freezeRotation = true;
@@ -19,11 +20,11 @@ public class Character : MonoBehaviour {
 		Vector3 pos = transform.position;
 		if (horizontalMovement != 0)
 		{
-			pos.x = pos.x + (0.1f * speed * horizontalMovement);
+			pos.x = pos.x + (0.1f * settings.speed * horizontalMovement);
 		}
 		if (verticalMovement != 0)
 		{
-			pos.z = pos.z + (0.1f * speed * verticalMovement);
+			pos.z = pos.z + (0.1f * settings.speed * verticalMovement);
 		}
 		transform.position = pos;
 	}
