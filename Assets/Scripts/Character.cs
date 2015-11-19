@@ -5,7 +5,17 @@ public class Character : MonoBehaviour {
 
 	public GameSettings settings;
 
+	public Material normalMaterial;
+	public Material speedUpMaterial;
+
 	private Rigidbody rigidBody;
+	private float speedBoost = 0f;
+
+	public void SpeedUp() {
+		speedBoost = settings.speedBoost;
+		GetComponent<Renderer>().material = speedUpMaterial;
+		StartCoroutine(NormalizeSpeed());
+	}
 
 	private void Start() {
 		rigidBody = GetComponent<Rigidbody>();
@@ -26,6 +36,13 @@ public class Character : MonoBehaviour {
 
 	private void MoveAxis(int movement, ref float currentPosition)
 	{
-		currentPosition = currentPosition + (0.1f * settings.speed * movement);
+		currentPosition = currentPosition + (0.1f * (settings.speed + speedBoost) * movement);
+	}
+
+	private IEnumerator NormalizeSpeed()
+	{
+		yield return new WaitForSeconds(settings.speedBoostDuration);
+		speedBoost = 0;
+		GetComponent<Renderer>().material = normalMaterial;
 	}
 }
