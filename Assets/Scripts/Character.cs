@@ -7,29 +7,29 @@ public class Character : MonoBehaviour {
 
 	private Rigidbody rigidBody;
 
-	void Start() {
+	private void Start() {
 		rigidBody = GetComponent<Rigidbody>();
 		rigidBody.freezeRotation = true;
 	}
 
-	void FixedUpdate (){
-		int horizontalMovement = (int)Input.GetAxisRaw("Horizontal");
-		int verticalMovement = (int)Input.GetAxisRaw("Vertical");
+	private void FixedUpdate (){
+		Move();
+	}
 
-		Transform transform = this.transform;
+	private void Move()
+	{
 		Vector3 pos = transform.position;
-		if (horizontalMovement != 0)
-		{
-			pos.x = pos.x + (0.1f * settings.speed * horizontalMovement);
-		}
-		if (verticalMovement != 0)
-		{
-			pos.z = pos.z + (0.1f * settings.speed * verticalMovement);
-		}
+		MoveAxis((int)Input.GetAxisRaw("Horizontal"), ref pos.x);
+		MoveAxis((int)Input.GetAxisRaw("Vertical"), ref pos.z);
 		transform.position = pos;
 	}
 
-	void OnTriggerEnter(Collider other)
+	private void MoveAxis(int movement, ref float currentPosition)
+	{
+		currentPosition = currentPosition + (0.1f * settings.speed * movement);
+	}
+
+	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag("Cookie"))
 			other.gameObject.SetActive(false);
