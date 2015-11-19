@@ -28,10 +28,4 @@ public class Character : MonoBehaviour {
 	{
 		currentPosition = currentPosition + (0.1f * settings.speed * movement);
 	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.gameObject.CompareTag("Cookie"))
-			other.gameObject.SetActive(false);
-	}
 }

@@ -5,27 +5,29 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 
 	public GameObject cookie;
+	public GameSettings settings;
+
 	private GameObject activeCookie;
-	private List<Vector3> spawnPoints =new List<Vector3>(){
-		new Vector3(-14, 3, 14),
-		new Vector3(14, 3, 14),
-		new Vector3(14, 3, -14)
-	};
 
 	void Start () {
-		StartCoroutine(SpawnCookie(2.0F));
+		ScheduleCookieSpawn();
+	}
+
+	private void ScheduleCookieSpawn() {
+		StartCoroutine(SpawnCookie(settings.cookieSpawnTime));
 	}
 
 	IEnumerator SpawnCookie(float waitTime) {
 		yield return new WaitForSeconds(waitTime);
 		activeCookie = Instantiate(cookie);
-		activeCookie.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)];
-		StartCoroutine(RemoveCookie(2.0F));
+		int spawnPointIndex = Random.Range(0, settings.cookieSpawnPoints.Count);
+		activeCookie.transform.position = settings.cookieSpawnPoints[spawnPointIndex];
+		StartCoroutine(RemoveCookie(settings.cookieTimeLimit));
 	}
 
 	IEnumerator RemoveCookie(float waitTime) {
 		yield return new WaitForSeconds(waitTime);
 		Destroy(activeCookie);
-		StartCoroutine(SpawnCookie(2.0F));
+		ScheduleCookieSpawn();
 	}
 }

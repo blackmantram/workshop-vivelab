@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Cookie : MonoBehaviour {
 
-	private void Update () {
-		transform.Rotate(Vector3.right, 4f);
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag("Character"))
+			gameObject.SetActive(false);
 	}
 }
